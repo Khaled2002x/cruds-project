@@ -13,6 +13,10 @@ let dom = {
   add_btn: document.querySelector(".add_btn"),
   boxs: document.querySelector(".boxs"),
   modal: document.querySelector(".modal"),
+  form: document.querySelector(".form"),
+  fullName_erroe: document.querySelector(".fullName_erroe"),
+  phoneNumber_erroe: document.querySelector(".phoneNumber_erroe"),
+  email_erroe: document.querySelector(".email_erroe"),
 };
 
 let contacts_list = [];
@@ -25,26 +29,31 @@ if (localStorage.getItem("data") == null) {
 }
 
 function add() {
-  let contacts = {
-    full_name: dom.full_name.value,
-    phone_number: dom.phone_number.value,
-    email: dom.email.value,
-    address: dom.address.value,
-    group_type: dom.group_type.value,
-    notes: dom.notes.value,
-    check_favour: dom.check_favour.value,
-    emergency_check: dom.emergency_check.value,
-  };
+  if (!validate()) {
+    return;
+  } else {
+    let contacts = {
+      full_name: dom.full_name.value,
+      phone_number: dom.phone_number.value,
+      email: dom.email.value,
+      address: dom.address.value,
+      group_type: dom.group_type.value,
+      notes: dom.notes.value,
+      check_favour: dom.check_favour.value,
+      emergency_check: dom.emergency_check.value,
+    };
 
-  contacts_list.push(contacts);
+    contacts_list.push(contacts);
 
-  localStorage.setItem("data", JSON.stringify(contacts_list));
-  Swal.fire({
-    title: "added sucssesfully",
-    text: "done",
-    icon: "success",
-  });
-  display();
+    localStorage.setItem("data", JSON.stringify(contacts_list));
+    Swal.fire({
+      title: "added sucssesfully",
+      text: "done",
+      icon: "success",
+    });
+    dom.form.reset();
+    display();
+  }
 }
 
 function display() {
@@ -53,7 +62,7 @@ function display() {
 
   for (let i = 0; i < contacts_list.length; i++) {
     cartona += `<div class="col-12 col-md-6 ">
-                <div class="shadow p-2 box">
+                <div class="shadow p-1 box rounded-2 w-100">
                   <div class="upper_card d-flex align-items-center gap-3">
                     <div class="upper_card_left">
                       <p class="m-0 tow_letter rounded-2 p-4 text-white">${getFirsttowletter(
@@ -138,5 +147,29 @@ function getFirsttowletter(word) {
     .map(function (w) {
       return w[0];
     })
-    .join('').toUpperCase());
+    .join("")
+    .toUpperCase());
+}
+function showerror(inputClass, errorName, msg) {
+  inputClass.style.bordercolor = "red";
+  errorName.innerHTML = msg;
+}
+function removeError(inputClass, errorName) {
+  inputClass.style.bordercolor = "gereen";
+  errorName.innerHTML = "";
+}
+function validate() {
+  let regex_fullName = /^[a-zA-Z ]+$/;
+  let isValid = true;
+  if (dom.full_name.value === "") {
+    isValid = false;
+    showerror(dom.full_name, dom.fullName_erroe, "please enter your fullname");
+  } else if (!regex_fullName.test(dom.full_name.value)) {
+    showerror(dom.full_name, dom.fullName_erroe, "enter only letter");
+    isValid = false;
+  } else {
+    isValid = true;
+    removeError(dom.full_name, dom.fullName_erroe);
+  }
+  return isValid;
 }

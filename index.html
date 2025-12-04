@@ -81,7 +81,7 @@
                       </button>
                     </div>
                   </div>
-                  <form>
+                  <form class="form">
                     <div class="mb-3">
                       <label for="formGroupExampleInput" class="form-label"
                         >Full Name *</label
@@ -93,6 +93,7 @@
                         id="formGroupExampleInput"
                         placeholder="input full name"
                       />
+                      <span class="fullName_erroe" style="color: red"></span>
                     </div>
                     <div class="mb-3">
                       <label for="formGroupExampleInput2" class="form-label"
@@ -105,6 +106,7 @@
                         id="formGroupExampleInput2"
                         placeholder="e.g.,01117005524"
                       />
+                      <span class="phoneNumber_erroe" style="color: red"></span>
                     </div>
                     <div class="mb-3">
                       <label for="exampleInputEmail1" class="form-label"
@@ -117,6 +119,8 @@
                         aria-describedby="emailHelp"
                         placeholder="name@example.com"
                       />
+                      <span class="email_erroe" style="color: red"></span>
+
                       <div id="emailHelp" class="form-text">
                         We'll never share your email with anyone else.
                       </div>
@@ -292,9 +296,7 @@
               <p class="m-0 text-muted fw-bold">No contacts found</p>
               <p>Click "Add Contact" to get started</p>
             </div>
-            <div class="row boxs m-auto g-3">
-             
-            </div>
+            <div class="row boxs m-auto g-3"></div>
           </div>
         </div>
         <div class="col-12 col-md-4">
