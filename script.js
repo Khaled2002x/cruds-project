@@ -61,7 +61,7 @@ function display() {
   var cartona = "";
 
   for (let i = 0; i < contacts_list.length; i++) {
-    cartona += `<div class="col-12 col-md-6 ">
+    cartona += `<div class="col-12 display_box col-md-6 ">
                 <div class="shadow p-1 box rounded-2 w-100">
                   <div class="upper_card d-flex align-items-center gap-3">
                     <div class="upper_card_left">
@@ -120,7 +120,7 @@ function display() {
                         </a>
                       </div>
                       <div class="box_footer_left_mail rounded p-2 text-center">
-                        <a href="${contacts_list[i].email}">
+                        <a href=mailto:"${contacts_list[i].email}">
                           <i class="fa-solid fa-envelope text-center"></i>
                         </a>
                       </div>
@@ -151,15 +151,17 @@ function getFirsttowletter(word) {
     .toUpperCase());
 }
 function showerror(inputClass, errorName, msg) {
-  inputClass.style.bordercolor = "red";
+  inputClass.style.borderColor = "red";
   errorName.innerHTML = msg;
 }
 function removeError(inputClass, errorName) {
-  inputClass.style.bordercolor = "gereen";
+  inputClass.style.borderColor = "green";
   errorName.innerHTML = "";
 }
 function validate() {
   let regex_fullName = /^[a-zA-Z ]+$/;
+  let regex_phone_num = /^(\+02|022)?(01)(0|1|2|5)[0-9]{8}$/;
+  let regex_email = /^[a-zA-Z0-9]+[-_]?[a-zA-Z0-9]+@gmail\.com$/;
   let isValid = true;
   if (dom.full_name.value === "") {
     isValid = false;
@@ -168,8 +170,27 @@ function validate() {
     showerror(dom.full_name, dom.fullName_erroe, "enter only letter");
     isValid = false;
   } else {
-    isValid = true;
     removeError(dom.full_name, dom.fullName_erroe);
+  }
+  if (dom.email.value == "" || !regex_email.test(dom.email.value)) {
+    isValid = false;
+    showerror(dom.email, dom.email_erroe, "plese enter valid email");
+  } else {
+    removeError(dom.email, dom.email_erroe);
+  }
+  if (
+    dom.phone_number.value === "" ||
+    !regex_phone_num.test(dom.phone_number.value)
+  ) {
+    showerror(
+      dom.phone_number,
+      dom.phoneNumber_erroe,
+      "please enter valid egyption phone number"
+    );
+    isValid = false;
+  } else {
+    // isValid = true;
+    removeError(dom.phone_number, dom.phoneNumber_erroe);
   }
   return isValid;
 }
