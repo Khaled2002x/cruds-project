@@ -146,7 +146,7 @@ function display() {
                           : "fa-regular"
                       } fa-heart" onclick="toogelemergencycheck(${i})"></i>
                       <i class="fa-solid fa-pen"></i>
-                      <i class="fa-solid fa-basket-shopping"></i>
+                      <i onclick="deleteElement(${i})" class="fa-solid fa-basket-shopping"></i>
                     </div>
                   </div>
                 </div>
@@ -356,4 +356,9 @@ function emergencyDisplay() {
     }
   }
   dom.emegency_text.innerHTML = emergency_box;
+}
+function deleteElement(index) {
+  contacts_list.splice(index, 1);
+  localStorage.setItem("data", JSON.stringify(contacts_list));
+  display();
 }
