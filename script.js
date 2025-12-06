@@ -17,8 +17,11 @@ let dom = {
   fullName_erroe: document.querySelector(".fullName_erroe"),
   phoneNumber_erroe: document.querySelector(".phoneNumber_erroe"),
   email_erroe: document.querySelector(".email_erroe"),
+  favourit_box: document.querySelector(".favourit_box"),
+  total_count_num: document.querySelector(".total_count_num"),
+  emegency_text: document.querySelector(".emegency_text"),
 };
-
+let my_model = new bootstrap.Modal(dom.modal);
 let contacts_list = [];
 
 if (localStorage.getItem("data") == null) {
@@ -39,10 +42,9 @@ function add() {
       address: dom.address.value,
       group_type: dom.group_type.value,
       notes: dom.notes.value,
-      check_favour: dom.check_favour.value,
-      emergency_check: dom.emergency_check.value,
+      check_favour: dom.check_favour.checked,
+      emergency_check: dom.emergency_check.checked,
     };
-
     contacts_list.push(contacts);
 
     localStorage.setItem("data", JSON.stringify(contacts_list));
@@ -51,18 +53,21 @@ function add() {
       text: "done",
       icon: "success",
     });
+    my_model.hide();
     dom.form.reset();
     display();
   }
 }
 
 function display() {
+  dom.total_count_num.innerHTML = contacts_list.length;
+
   dom.total_counter.innerHTML = contacts_list.length;
   var cartona = "";
 
   for (let i = 0; i < contacts_list.length; i++) {
-    cartona += `<div class="col-12 display_box col-md-6 ">
-                <div class="shadow p-1 box rounded-2 w-100">
+    cartona += `<div class="col-12 display_box  col-lg-6 ">
+                <div class="shadow  box rounded-2 w-100 h-100 p-3">
                   <div class="upper_card d-flex align-items-center gap-3">
                     <div class="upper_card_left">
                       <p class="m-0 tow_letter rounded-2 p-4 text-white">${getFirsttowletter(
@@ -86,11 +91,13 @@ function display() {
                     </div>
                   </div>
                   <div class="box_body mt-4 d-flex flex-column gap-3">
-                    <div class="box_body_top d-flex align-items-center gap-2">
+                    <div class="box_body_top d-flex align-items-center gap-2 ">
                       <div class="box_body_top_icon p-2 text-center rounded-2">
                         <i class="fa-solid fa-envelope"></i>
                       </div>
-                      <p class="m-0">${contacts_list[i].email}</p>
+                      <p class="m-0 " style="font-size: 0.8rem">${
+                        contacts_list[i].email
+                      }</p>
                     </div>
                     <div
                       class="box_body_miidle d-flex align-items-center gap-2"
@@ -128,17 +135,29 @@ function display() {
                     <div
                       class="box_footer_left d-flex align-items-center gap-2"
                     >
-                      <i class="fa-regular fa-star"></i>
-                      <i class="fa-regular fa-heart"></i>
+                      <i class="${
+                        contacts_list[i].check_favour
+                          ? "fa-solid"
+                          : "fa-regular"
+                      } fa-star"  onclick="toggelfavouritcheck(${i})"></i>
+                      <i class="${
+                        contacts_list[i].emergency_check
+                          ? "fa-solid"
+                          : "fa-regular"
+                      } fa-heart" onclick="toogelemergencycheck(${i})"></i>
                       <i class="fa-solid fa-pen"></i>
                       <i class="fa-solid fa-basket-shopping"></i>
                     </div>
                   </div>
                 </div>
               </div>`;
-
-    dom.boxs.innerHTML = cartona;
   }
+  dom.boxs.innerHTML = cartona;
+  favouritcount();
+  favouritetext();
+  countEmergency();
+  emergencyDisplay();
+
   localStorage.setItem("data", JSON.stringify(contacts_list));
 }
 function getFirsttowletter(word) {
@@ -192,5 +211,149 @@ function validate() {
     // isValid = true;
     removeError(dom.phone_number, dom.phoneNumber_erroe);
   }
+  if (!isValid) {
+    return false;
+  }
+  //check duplicated
+  for (let i = 0; i < contacts_list.length; i++) {
+    if (
+      contacts_list[i].full_name.trim().toUpperCase() ===
+      dom.full_name.value.trim().toUpperCase()
+    ) {
+      showerror(
+        dom.full_name,
+        dom.fullName_erroe,
+        "you enterd this name before"
+      );
+      return false;
+    }
+    if (
+      contacts_list[i].phone_number.trim() === dom.phone_number.value.trim()
+    ) {
+      showerror(
+        dom.phone_number,
+        dom.phoneNumber_erroe,
+        "this phone numper already exist"
+      );
+      return false;
+    }
+    if (
+      contacts_list[i].email.trim().toUpperCase() ===
+      dom.email.value.trim().toUpperCase()
+    ) {
+      showerror(dom.email, dom.email_erroe, "this email already exist");
+      return false;
+    }
+  }
+
   return isValid;
+}
+function toggelfavouritcheck(index) {
+  contacts_list[index].check_favour = !contacts_list[index].check_favour;
+  localStorage.setItem("data", JSON.stringify(contacts_list));
+  display();
+}
+function favouritcount() {
+  let currentFavour = 0;
+  for (let i = 0; i < contacts_list.length; i++) {
+    if (contacts_list[i].check_favour === true) {
+      currentFavour++;
+    }
+  }
+
+  dom.Favorites_counter.innerHTML = currentFavour;
+}
+function favouritetext() {
+  let box_favourite = "";
+
+  for (let i = 0; i < contacts_list.length; i++) {
+    if (contacts_list[i].check_favour === true) {
+      box_favourite += ` <div class="col-12">
+
+  <div class="upper_card d-flex align-items-center  gap-3 p-3 rounded-3 shadow-sm">
+
+
+    <div class="upper_card_left">
+      <p class="m-0 tow_letter rounded-2 p-4 text-white">
+        ${getFirsttowletter(contacts_list[i].full_name)}
+      </p>
+    </div>
+
+    
+    <div class="upper_card_left_text d-flex flex-column gap-2 text-center">
+      <p class="m-0 name fw-bold">
+        ${contacts_list[i].full_name}
+      </p>
+
+      <div class="upper_card_left_text_phone d-flex align-items-center justify-content-center gap-2">
+        <div class="upper_card_left_text_icon p-2 rounded-2 bg-light">
+          <i class="fa-solid fa-phone text-center"></i>
+        </div>
+        <p class="m-0 text-muted">
+          ${contacts_list[i].phone_number}
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+                    `;
+    }
+  }
+  dom.favourit_box.innerHTML = box_favourite;
+}
+
+function toogelemergencycheck(index) {
+  contacts_list[index].emergency_check = !contacts_list[index].emergency_check;
+  localStorage.setItem("data", JSON.stringify(contacts_list));
+  display();
+}
+function countEmergency() {
+  let total_emergency = 0;
+  for (let i = 0; i < contacts_list.length; i++) {
+    if (contacts_list[i].emergency_check === true) {
+      total_emergency++;
+    }
+  }
+  dom.Emergency_counter.innerHTML = total_emergency;
+}
+function emergencyDisplay() {
+  let emergency_box = "";
+  for (let i = 0; i < contacts_list.length; i++) {
+    if (contacts_list[i].emergency_check === true) {
+      emergency_box += `<div class="col-12">
+
+  <div class="upper_card d-flex align-items-center  gap-3 p-3 rounded-3 shadow-sm">
+
+
+    <div class="upper_card_left">
+      <p class="m-0 tow_letter rounded-2 p-4 text-white">
+        ${getFirsttowletter(contacts_list[i].full_name)}
+      </p>
+    </div>
+
+    
+    <div class="upper_card_left_text d-flex flex-column gap-2 text-center">
+      <p class="m-0 name fw-bold">
+        ${contacts_list[i].full_name}
+      </p>
+
+      <div class="upper_card_left_text_phone d-flex align-items-center justify-content-center gap-2">
+        <div class="upper_card_left_text_icon p-2 rounded-2 bg-light">
+          <i class="fa-solid fa-phone text-center"></i>
+        </div>
+        <p class="m-0 text-muted">
+          ${contacts_list[i].phone_number}
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</div>`;
+    }
+  }
+  dom.emegency_text.innerHTML = emergency_box;
 }

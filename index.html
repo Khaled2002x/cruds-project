@@ -258,7 +258,7 @@
             </div>
             <div class="right_box_content d-flex flex-column gap-1">
               <p class="m-0">Favorites</p>
-              <p class="m-0 fw-bold Favorites_counter">0</p>
+              <p class="m-0 fw-bold Favorites_counter"></p>
             </div>
           </div>
         </div>
@@ -281,7 +281,10 @@
           <div class="inner_contact">
             <div class="inner_contact_text">
               <h3 class="m-0">All Contacts</h3>
-              <p class="m-0 text-muted">Manage and organize your 0 contacts</p>
+              <p class="m-0 text-muted">
+                Manage and organize your
+                <span class="total_count_num"></span> contacts
+              </p>
             </div>
             <div class="search_input my-4">
               <input
@@ -296,10 +299,10 @@
               <p class="m-0 text-muted fw-bold">No contacts found</p>
               <p>Click "Add Contact" to get started</p>
             </div>
-            <div class="row boxs m-auto g-3"></div>
+            <div class="row boxs g-2 m-auto"></div>
           </div>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-lg-4">
           <div class="inner_content d-flex flex-column gap-3">
             <div class="card_content1 shadow p-3 rounded-3">
               <div
@@ -313,9 +316,7 @@
                   <p class="m-0 text-muted">Quick access to starred contacts</p>
                 </div>
               </div>
-              <div class="card_content1_text">
-                <p class="m-0 text-muted text-center py-5">No favorites yet</p>
-              </div>
+              <div class="card_content1_text g-3 mt-2 row favourit_box"></div>
             </div>
             <div class="card_content1 shadow p-3 rounded-3">
               <div
@@ -333,11 +334,7 @@
                   </p>
                 </div>
               </div>
-              <div class="card_content1_text">
-                <p class="m-0 text-muted text-center py-5">
-                  No emergency contacts
-                </p>
-              </div>
+              <div class="card_content1_text mt-3 emegency_text row g-2"></div>
             </div>
           </div>
         </div>
