@@ -20,6 +20,8 @@ let dom = {
   favourit_box: document.querySelector(".favourit_box"),
   total_count_num: document.querySelector(".total_count_num"),
   emegency_text: document.querySelector(".emegency_text"),
+  Update_btn: document.querySelector(".Update_btn"),
+  add_btn_model: document.querySelector(".add_btn_model"),
 };
 let my_model = new bootstrap.Modal(dom.modal);
 let contacts_list = [];
@@ -32,7 +34,7 @@ if (localStorage.getItem("data") == null) {
 }
 
 function add() {
-  if (!validate()) {
+  if (!validate() || !checkduplicate()) {
     return;
   } else {
     let contacts = {
@@ -55,9 +57,20 @@ function add() {
     });
     my_model.hide();
     dom.form.reset();
+    dom.Update_btn.classList.remove("d-block");
+    dom.Update_btn.classList.add("d-none");
+    dom.add_btn.classList.remove("d-none");
+    dom.add_btn.classList.add("d-block");
     display();
   }
 }
+dom.add_btn_model.onclick = () => {
+  dom.Update_btn.classList.remove("d-block");
+  dom.Update_btn.classList.add("d-none");
+  dom.add_btn.classList.remove("d-none");
+  dom.add_btn.classList.add("d-block");
+  dom.form.reset();
+};
 
 function display() {
   dom.total_count_num.innerHTML = contacts_list.length;
@@ -145,7 +158,7 @@ function display() {
                           ? "fa-solid"
                           : "fa-regular"
                       } fa-heart" onclick="toogelemergencycheck(${i})"></i>
-                      <i class="fa-solid fa-pen"></i>
+                      <i onclick="setUpToUpdate(${i})" class="fa-solid fa-pen"></i>
                       <i onclick="deleteElement(${i})" class="fa-solid fa-basket-shopping"></i>
                     </div>
                   </div>
@@ -214,7 +227,10 @@ function validate() {
   if (!isValid) {
     return false;
   }
-  //check duplicated
+
+  return isValid;
+}
+function checkduplicate() {
   for (let i = 0; i < contacts_list.length; i++) {
     if (
       contacts_list[i].full_name.trim().toUpperCase() ===
@@ -245,8 +261,6 @@ function validate() {
       return false;
     }
   }
-
-  return isValid;
 }
 function toggelfavouritcheck(index) {
   contacts_list[index].check_favour = !contacts_list[index].check_favour;
@@ -358,7 +372,53 @@ function emergencyDisplay() {
   dom.emegency_text.innerHTML = emergency_box;
 }
 function deleteElement(index) {
-  contacts_list.splice(index, 1);
-  localStorage.setItem("data", JSON.stringify(contacts_list));
-  display();
+  Swal.fire({
+    title: "Do you want to delete this box?",
+    showDenyButton: true,
+    showCancelButton: true,
+    confirmButtonText: "Delete",
+    denyButtonText: `Don't save`,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      contacts_list.splice(index, 1);
+      localStorage.setItem("data", JSON.stringify(contacts_list));
+      display();
+    } else if (result.isDenied) {
+      return;
+    }
+  });
 }
+let currenIndex;
+function setUpToUpdate(index) {
+  my_model.show();
+  dom.full_name.value = contacts_list[index].full_name;
+  dom.email.value = contacts_list[index].email;
+  dom.phone_number.value = contacts_list[index].phone_number;
+  dom.address.value = contacts_list[index].address;
+  dom.group_type.value = contacts_list[index].group_type;
+  dom.notes.value = contacts_list[index].notes;
+  dom.check_favour.checked = contacts_list[index].check_favour;
+  dom.emergency_check.checked = contacts_list[index].emergency_check;
+  currenIndex = index;
+  dom.add_btn.classList.add("d-none");
+  dom.Update_btn.classList.remove("d-none");
+
+  dom.Update_btn.classList.add("d-block");
+}
+dom.Update_btn.onclick = () => {
+  if (!validate()) return;
+  else {
+    my_model.hide();
+    contacts_list[currenIndex].full_name = dom.full_name.value;
+    contacts_list[currenIndex].email = dom.email.value;
+    contacts_list[currenIndex].phone_number = dom.phone_number.value;
+    contacts_list[currenIndex].address = dom.address.value;
+    contacts_list[currenIndex].group_type = dom.group_type.value;
+    contacts_list[currenIndex].notes = dom.notes.value;
+    contacts_list[currenIndex].check_favour = dom.check_favour.checked;
+    contacts_list[currenIndex].emergency_check = dom.emergency_check.checked;
+
+    localStorage.setItem("data", JSON.stringify(contacts_list));
+    display();
+  }
+};

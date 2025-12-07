@@ -23,12 +23,13 @@
 .nav_head {
   color: #7f22fe;
 }
-.add_btn {
+.add_btn_model {
   background-color: #6034f9;
   transition: 0.3s;
 }
 .modal {
-  max-height: 53.125rem;
+  /* max-height: 53.125rem; */
+  height: 100%;
   overflow-y: auto;
 }
 .img_nav {
@@ -36,7 +37,7 @@
   box-shadow: 0.625rem;
 }
 .add_btn:hover {
-  transform: translateY(-0.625rem);
+  transform: translateY(.1875rem);
 }
 .left_box_content_icon {
   background-color: #1c69ff;
