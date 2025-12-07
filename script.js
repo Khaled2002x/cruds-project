@@ -195,7 +195,7 @@ function validate() {
   let regex_phone_num = /^(\+02|022)?(01)(0|1|2|5)[0-9]{8}$/;
   let regex_email = /^[a-zA-Z0-9]+[-_]?[a-zA-Z0-9]+@gmail\.com$/;
   let isValid = true;
-  if (dom.full_name.value === "") {
+  if (dom.full_name.value.trim() == "") {
     isValid = false;
     showerror(dom.full_name, dom.fullName_erroe, "please enter your fullname");
   } else if (!regex_fullName.test(dom.full_name.value)) {
@@ -204,14 +204,14 @@ function validate() {
   } else {
     removeError(dom.full_name, dom.fullName_erroe);
   }
-  if (dom.email.value == "" || !regex_email.test(dom.email.value)) {
+  if (dom.email.value.trim() == "" || !regex_email.test(dom.email.value)) {
     isValid = false;
     showerror(dom.email, dom.email_erroe, "plese enter valid email");
   } else {
     removeError(dom.email, dom.email_erroe);
   }
   if (
-    dom.phone_number.value === "" ||
+    dom.phone_number.value.trim() === "" ||
     !regex_phone_num.test(dom.phone_number.value)
   ) {
     showerror(
@@ -261,6 +261,7 @@ function checkduplicate() {
       return false;
     }
   }
+  return true;
 }
 function toggelfavouritcheck(index) {
   contacts_list[index].check_favour = !contacts_list[index].check_favour;
