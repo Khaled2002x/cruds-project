@@ -406,7 +406,7 @@ function setUpToUpdate(index) {
   dom.Update_btn.classList.add("d-block");
 }
 dom.Update_btn.onclick = () => {
-  if (!validate()) return;
+  if (!validate() || !stoprepeatonupdate()) return;
   else {
     my_model.hide();
     contacts_list[currenIndex].full_name = dom.full_name.value;
@@ -422,3 +422,37 @@ dom.Update_btn.onclick = () => {
     display();
   }
 };
+function stoprepeatonupdate() {
+  for (let i = 0; i < contacts_list.length; i++) {
+    if (i === currenIndex) continue;
+    if (
+      contacts_list[i].full_name.trim().toUpperCase() ===
+      dom.full_name.value.trim().toUpperCase()
+    ) {
+      showerror(
+        dom.full_name,
+        dom.fullName_erroe,
+        "you enterd this name before"
+      );
+      return false;
+    }
+    if (
+      contacts_list[i].phone_number.trim() === dom.phone_number.value.trim()
+    ) {
+      showerror(
+        dom.phone_number,
+        dom.phoneNumber_erroe,
+        "this phone numper already exist"
+      );
+      return false;
+    }
+    if (
+      contacts_list[i].email.trim().toUpperCase() ===
+      dom.email.value.trim().toUpperCase()
+    ) {
+      showerror(dom.email, dom.email_erroe, "this email already exist");
+      return false;
+    }
+  }
+  return true;
+}

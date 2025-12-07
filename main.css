@@ -27,17 +27,16 @@
   background-color: #6034f9;
   transition: 0.3s;
 }
-.modal {
-  /* max-height: 53.125rem; */
-  height: 100%;
-  overflow-y: auto;
+.modal-body {
+  height: 70vh;
+  overflow: auto;
 }
 .img_nav {
   max-width: 3.125rem;
   box-shadow: 0.625rem;
 }
 .add_btn:hover {
-  transform: translateY(.1875rem);
+  transform: translateY(0.1875rem);
 }
 .left_box_content_icon {
   background-color: #1c69ff;
@@ -137,6 +136,7 @@
   :root {
     font-size: 0.8125rem;
   }
+
   .main_content {
     width: 100%;
     padding: 0.3125rem;
@@ -165,6 +165,7 @@
     width: 100%;
     padding: 0.3125rem;
   }
+
   .nav_section {
     width: 100%;
   }
@@ -187,6 +188,7 @@
     width: 85%;
     padding: 0.3125rem;
   }
+
   .nav_section {
     width: 85%;
   }
