@@ -115,7 +115,7 @@
   }
   .main_content {
     width: 100%;
-    padding: 0.3125rem;
+    padding:0;
   }
   .nav_section {
     width: 100%;
@@ -125,16 +125,19 @@
   }
   .box_types {
     margin-top: 0.625rem;
-    padding: 0.9375rem;
+    padding: .5rem;
   }
   .all_cotact {
     margin-top: 0.625rem;
-    padding: 0.9375rem;
+    padding: .5rem;
   }
 }
 @media (min-width: 576px) and (max-width: 767.98px) {
   :root {
     font-size: 0.8125rem;
+  }
+  .word_md{
+    display: none !important;
   }
 
   .main_content {
@@ -150,6 +153,11 @@
   .box_types {
     margin-top: 0.625rem;
     padding: 0.9375rem;
+    width: 100%;
+
+  }
+  .box_1{
+    width: 100%;
   }
 
   .all_cotact {
@@ -169,6 +177,12 @@
   .nav_section {
     width: 100%;
   }
+  .display_box{
+    width: 100%;
+  }
+}
+.boxs{
+  width: 100%;
 }
 @media (min-width: 992px) and (max-width: 1199.98px) {
   :root {

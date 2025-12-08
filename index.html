@@ -17,29 +17,30 @@
   <body>
     <div class="main_content p-3 m-auto">
       <div
-        class="nav_section d-flex align-items-center justify-content-between my-3 w-100"
+        class="nav_section d-flex align-items-center justify-content-between my-3 w-100 "
       >
-        <div class="left_nav_section d-flex align-items-center gap-3 w-25">
+        <div class="left_nav_section d-flex align-items-center gap-3 w-25 me-auto">
           <div class="nav_icon rounded-2 p-2">
             <i class="fa-solid fa-address-book text-center"></i>
           </div>
 
           <div class="left_nav_section_text">
-            <h4 class="m-0 fw-bold">
-              Contact<span class="nav_head">Hub</span>
+            <h4 class="m-0 fw-bold" style="font-size: 1.25rem;">
+              Contact<span class="nav_head" style="font-size: 1.25rem;">Hub</span>
             </h4>
             <p class="m-0 text-muted">Smart Contact Manager</p>
           </div>
         </div>
-        <div class="right_nav d-flex gap-4 align-items-center">
+        <div class="right_nav d-flex gap-2 align-items-center ms-auto">
           <!-- Button trigger modal -->
           <button
             type="button"
             class="btn-outline-none border-0 p-1 rounded-2 px-2 text-capitalize add_btn_model text-white"
+            style="font-size: 1rem;"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
           >
-            + add contact
+            + add <span class="word_md ">contact</span>
           </button>
 
           <!-- Modal -->
@@ -289,7 +290,8 @@
             </div>
             <div class="search_input my-4">
               <input
-                class="form-control"
+              
+                class="form-control input_search"
                 list="datalistOptions"
                 id="exampleDataList"
                 placeholder="Type to search..."

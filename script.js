@@ -22,6 +22,7 @@ let dom = {
   emegency_text: document.querySelector(".emegency_text"),
   Update_btn: document.querySelector(".Update_btn"),
   add_btn_model: document.querySelector(".add_btn_model"),
+  input_search: document.querySelector(".input_search"),
 };
 let my_model = new bootstrap.Modal(dom.modal);
 let contacts_list = [];
@@ -30,7 +31,7 @@ if (localStorage.getItem("data") == null) {
   localStorage.setItem("data", JSON.stringify(contacts_list));
 } else {
   contacts_list = JSON.parse(localStorage.getItem("data"));
-  display();
+  display(contacts_list);
 }
 
 function add() {
@@ -61,7 +62,7 @@ function add() {
     dom.Update_btn.classList.add("d-none");
     dom.add_btn.classList.remove("d-none");
     dom.add_btn.classList.add("d-block");
-    display();
+    display(contacts_list);
   }
 }
 dom.add_btn_model.onclick = () => {
@@ -72,34 +73,30 @@ dom.add_btn_model.onclick = () => {
   dom.form.reset();
 };
 
-function display() {
+function display(array) {
   dom.total_count_num.innerHTML = contacts_list.length;
 
   dom.total_counter.innerHTML = contacts_list.length;
   var cartona = "";
 
-  for (let i = 0; i < contacts_list.length; i++) {
+  for (let i = 0; i < array.length; i++) {
     cartona += `<div class="col-12 display_box  col-lg-6 ">
                 <div class="shadow  box rounded-2 w-100 h-100 p-3">
                   <div class="upper_card d-flex align-items-center gap-3">
                     <div class="upper_card_left">
                       <p class="m-0 tow_letter rounded-2 p-4 text-white">${getFirsttowletter(
-                        contacts_list[i].full_name
+                        array[i].full_name
                       )}</p>
                     </div>
                     <div class="upper_card_left_text d-flex flex-column gap-2">
-                      <p class="m-0 name fw-bold">${
-                        contacts_list[i].full_name
-                      }</p>
+                      <p class="m-0 name fw-bold">${array[i].full_name}</p>
                       <div
                         class="upper_card_left_text_phone d-flex align-items-center gap-2"
                       >
                         <div class="upper_card_left_text_icon p-2 rounded-2">
                           <i class="fa-solid fa-phone text-center"></i>
                         </div>
-                        <p class="m-0 text-muted">${
-                          contacts_list[i].phone_number
-                        }</p>
+                        <p class="m-0 text-muted">${array[i].phone_number}</p>
                       </div>
                     </div>
                   </div>
@@ -109,7 +106,7 @@ function display() {
                         <i class="fa-solid fa-envelope"></i>
                       </div>
                       <p class="m-0 " style="font-size: 0.8rem">${
-                        contacts_list[i].email
+                        array[i].email
                       }</p>
                     </div>
                     <div
@@ -120,12 +117,10 @@ function display() {
                       >
                         <i class="fa-solid fa-location-dot"></i>
                       </div>
-                      <p class="m-0">${contacts_list[i].address}</p>
+                      <p class="m-0">${array[i].address}</p>
                     </div>
                     <div class="rounded-4 text-center foot p-1">
-                      <p class="box_body_footer">${
-                        contacts_list[i].group_type
-                      }</p>
+                      <p class="box_body_footer">${array[i].group_type}</p>
                     </div>
                   </div>
                   <div
@@ -135,12 +130,12 @@ function display() {
                       class="box_footer_left d-flex align-items-center gap-2"
                     >
                       <div class="box_footer_left_tel rounded p-2 text-center">
-                        <a href="tel:${contacts_list[i].phone_number}">
+                        <a href="tel:${array[i].phone_number}">
                           <i class="fa-solid fa-phone text-center"></i>
                         </a>
                       </div>
                       <div class="box_footer_left_mail rounded p-2 text-center">
-                        <a href=mailto:"${contacts_list[i].email}">
+                        <a href=mailto:"${array[i].email}">
                           <i class="fa-solid fa-envelope text-center"></i>
                         </a>
                       </div>
@@ -149,14 +144,10 @@ function display() {
                       class="box_footer_left d-flex align-items-center gap-2"
                     >
                       <i class="${
-                        contacts_list[i].check_favour
-                          ? "fa-solid"
-                          : "fa-regular"
+                        array[i].check_favour ? "fa-solid" : "fa-regular"
                       } fa-star"  onclick="toggelfavouritcheck(${i})"></i>
                       <i class="${
-                        contacts_list[i].emergency_check
-                          ? "fa-solid"
-                          : "fa-regular"
+                        array[i].emergency_check ? "fa-solid" : "fa-regular"
                       } fa-heart" onclick="toogelemergencycheck(${i})"></i>
                       <i onclick="setUpToUpdate(${i})" class="fa-solid fa-pen"></i>
                       <i onclick="deleteElement(${i})" class="fa-solid fa-basket-shopping"></i>
@@ -266,7 +257,7 @@ function checkduplicate() {
 function toggelfavouritcheck(index) {
   contacts_list[index].check_favour = !contacts_list[index].check_favour;
   localStorage.setItem("data", JSON.stringify(contacts_list));
-  display();
+  display(contacts_list);
 }
 function favouritcount() {
   let currentFavour = 0;
@@ -323,7 +314,7 @@ function favouritetext() {
 function toogelemergencycheck(index) {
   contacts_list[index].emergency_check = !contacts_list[index].emergency_check;
   localStorage.setItem("data", JSON.stringify(contacts_list));
-  display();
+  display(contacts_list);
 }
 function countEmergency() {
   let total_emergency = 0;
@@ -383,7 +374,7 @@ function deleteElement(index) {
     if (result.isConfirmed) {
       contacts_list.splice(index, 1);
       localStorage.setItem("data", JSON.stringify(contacts_list));
-      display();
+      display(contacts_list);
     } else if (result.isDenied) {
       return;
     }
@@ -420,7 +411,7 @@ dom.Update_btn.onclick = () => {
     contacts_list[currenIndex].emergency_check = dom.emergency_check.checked;
 
     localStorage.setItem("data", JSON.stringify(contacts_list));
-    display();
+    display(contacts_list);
   }
 };
 function stoprepeatonupdate() {
@@ -457,3 +448,30 @@ function stoprepeatonupdate() {
   }
   return true;
 }
+
+dom.input_search.oninput = () => {
+  let new_list = [];
+  let input_search_value = dom.input_search.value.trim().toLowerCase();
+
+  for (let i = 0; i < contacts_list.length; i++) {
+    if (
+      contacts_list[i].full_name
+        .trim()
+        .toLowerCase()
+        .includes(input_search_value) ||
+      contacts_list[i].phone_number
+        .trim()
+        .toLowerCase()
+        .includes(input_search_value) ||
+      contacts_list[i].email.trim().toLowerCase().includes(input_search_value)
+    ) {
+      new_list.push(contacts_list[i]);
+    }
+  }
+  console.log(new_list);
+
+  display(new_list);
+};
+//search value
+//contact_list
+//arr[] push contact_list[i]
